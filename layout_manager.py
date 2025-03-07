@@ -15,7 +15,6 @@ class LayoutManager:
                     return data
             except Exception as e:
                 print("Error loading layout:", e)
-        # Return an empty layout if no configuration exists
         return {}
 
     def save_layout(self, layout):

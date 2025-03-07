@@ -17,7 +17,7 @@ class IconWidget(tk.Label):
     def start_drag(self, event):
         self._drag_data["x"] = event.x
         self._drag_data["y"] = event.y
-        self.lift()
+        self.lift()  # Bring the widget to the front
 
     def do_drag(self, event):
         dx = event.x - self._drag_data["x"]
@@ -34,7 +34,7 @@ class IconManager:
     def __init__(self, master, desktop_path):
         self.master = master
         self.desktop_path = desktop_path
-        self.icon_size = (64, 64)  # Desired icon size
+        self.icon_size = (64, 64)  # Desired size for icons
 
     def get_desktop_icons(self):
         icons = []
@@ -47,16 +47,14 @@ class IconManager:
                 full_path = os.path.join(self.desktop_path, file)
                 icon_image = self.get_icon_image(full_path)
                 if icon_image:
-                    # Create a draggable icon widget
                     widget = IconWidget(self.master, full_path, icon_image)
-                    # Initially place the icon at a default position; later it can be moved into a fence
+                    # Place icons at a default starting position; user can drag them into fences
                     widget.place(x=100, y=100)
                     icons.append(widget)
         return icons
 
     def get_icon_image(self, icon_path):
-        # For simplicity, load a placeholder image from assets.
-        # A more advanced implementation would extract the actual icon from the shortcut.
+        # For simplicity, use a placeholder image.
         try:
             image = Image.open("assets/icons/placeholder.png")
             image = image.resize(self.icon_size, Image.ANTIALIAS)

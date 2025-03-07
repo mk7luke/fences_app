@@ -1,6 +1,5 @@
 # main.py
 import tkinter as tk
-from tkinter import ttk
 from tkinterdnd2 import TkinterDnD
 import os
 
@@ -10,46 +9,43 @@ from layout_manager import LayoutManager
 
 
 def get_desktop_path():
-    # Use the standard approach to get the desktop path on Windows.
-    # If it doesn't exist, fall back to the current working directory.
     desktop = os.path.expanduser("~/Desktop")
-    if os.path.exists(desktop):
-        return desktop
-    else:
-        return os.getcwd()
+    return desktop if os.path.exists(desktop) else os.getcwd()
 
 
 def main():
-    # Create the main window with drag-and-drop support
+    # Create the root window with drag-and-drop support
     root = TkinterDnD.Tk()
     root.title("Custom Fences Organizer")
     root.geometry("800x600")
-    root.configure(bg="#f0f0f0")
+    root.withdraw()  # Hide the main window; overlays will be used
 
-    # Initialize the layout manager and load saved layout (if any)
+    # Load saved layout (if any)
     layout_manager = LayoutManager("config.json")
     layout_data = layout_manager.load_layout()
 
-    # Create the fence manager (this creates one or more fences based on layout data)
+    # Create fence manager (creates Toplevel overlay fences)
     fence_manager = FenceManager(root, layout_data)
 
-    # Initialize the icon manager using the user's desktop path
+    # Load desktop icons (placeholder images required in assets/icons/)
     desktop_path = get_desktop_path()
     icon_manager = IconManager(root, desktop_path)
     icons = icon_manager.get_desktop_icons()
 
-    # Add each desktop icon to the first fence (or assign based on layout if available)
+    # For now, add each icon to the first fence
     for icon in icons:
         fence_manager.add_icon_to_fence(icon)
 
-    # Create a "Save Layout" button to store the current layout configuration
-    def save_layout():
-        layout = fence_manager.get_layout()
-        layout_manager.save_layout(layout)
-        print("Layout saved.")
+    # Bind F2 and F12 globally to create a new fence or exit the app
+    def create_new_fence(event):
+        fence_manager.create_fence(100, 100)
 
-    save_button = ttk.Button(root, text="Save Layout", command=save_layout)
-    save_button.pack(side="bottom", pady=10)
+    root.bind_all("<F2>", create_new_fence)
+
+    def exit_app(event):
+        root.quit()
+
+    root.bind_all("<F12>", exit_app)
 
     root.mainloop()
 

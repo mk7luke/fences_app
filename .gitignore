@@ -1,0 +1,52 @@
+# Python-related
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+ENV/
+*.venv
+*.env
+
+# Flask & Database
+instance/
+*.sqlite3
+*.db
+
+# Migrations
+migrations/
+
+# Secrets & Configs
+.env
+# config.py
+# config.json
+
+# Logs & Temp Files
+*.log
+logs/
+debug.log
+*.pid
+
+# Compiled Files
+*.so
+*.out
+*.exe
+
+# MacOS & Linux
+.DS_Store
+*.swp
+*.swo
+*.swn
+
+# VS Code & IDE Settings
+.vscode/
+.idea/
+*.iml
+
+# Dependencies
+*.egg-info/
+dist/
+build/
